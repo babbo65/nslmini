@@ -45,7 +45,46 @@ def safe_ip(ip):                        #removes single quotes, csv hs them and 
             return False
     return True
 
-f = open("out.txt")
+with open(file, 'r') as f:
+    content = f.read()
 
-for x in f:
-    parts=re.split()
+content=content.replace('\r\n', '\n')
+
+tree = ET.ElementTree(ET.fromstring(content))
+root = tree.getroot()
+
+#Searhes for and grabs timestamp
+time_location=root.find('./runstats/finished')
+time=time_location.attrib['timestr']
+
+def logdata(child):
+    if element.tag == "host":
+        for addr in root.findall(".//address"):
+            if addr.attrib.get("addrtype") == "ipv4":
+                addr.attrib.get addr
+            elif addr.attrib.get("addrtype") == "mac":
+                addr.tag = "mac_address"
+
+
+
+
+        #Once it locates port info, check if that ip relative to time is already there and update
+        #Else make new entry
+        check_if_exists = "SELECT COUNT(*) FROM masscan_report WHERE ip=%s AND time=%s"
+        check_values = (ip, time)
+        check=execute_query(check_if_exists, check_values)
+                if check[0] > 0:
+                    query = f"UPDATE  masscan_report SET `port_{port}`=1 WHERE ip=%s AND time=%s"
+                    values=(ip, time)
+                    execute_query(query, values)
+                else:
+                    query = f"INSERT INTO masscan_report (ip, time, `port_{port}`) VALUES (%s, %s, %s)"
+                    values = (ip, time, 1)
+                    execute_query(query, values)
+    for child in element:           #Since file is formatted as tree uses recusrion to dive into tree
+        logdata(child, time)
+
+
+
+logdata(root)
+cnx.close()
