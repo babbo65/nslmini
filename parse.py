@@ -8,7 +8,7 @@ from datetime import date, timedelta
 #Creates connection with db, set up to use environment variable for usr pass in future
 username = os.environ.get("username")
 password = os.environ.get("password")
-cnx = mysql.connector.connect(user=username, password=password, host='127.0.0.1', database='logs')
+cnx = mysql.connector.connect(user=username, password=password, host='127.0.0.1', database='nslmini')
 #Repeat functions
 #function to execute querys into db from connection
 def execute_query(query):

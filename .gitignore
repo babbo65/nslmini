@@ -1,2 +1,6 @@
 out.xml
 out.txt
+env.sh
+
+#python venv
+nslmini/ 
